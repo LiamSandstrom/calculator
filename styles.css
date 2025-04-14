@@ -1,6 +1,6 @@
 :root{
     --button-size: 70px;
-    --button-gap: 10px;
+    --button-gap: 8px;
     --button-font-size: 30px;
 
     --button-utility-color: rgb(149, 146, 146);
@@ -9,7 +9,7 @@
     --button-number-color: rgb(49, 47, 47);
     --button-text-number-color: white;
 
-    --button-operator-color: orange;
+    --button-operator-color: rgb(203, 132, 0);
     --button-text-operator-color:white;
 
     --display-font-size: 60px;
@@ -36,7 +36,7 @@ body {
     justify-content: center;
     flex-direction: column;
     background: black;
-    padding: 15px;
+    padding: 12px;
     border-radius: 10px;
     width: calc(30px + ((var(--button-size) + var(--button-gap)) * 4));
 }
@@ -49,7 +49,6 @@ body {
     width: 100%;
     padding-top: 50px;
     padding-bottom: 10px;
-    margin-bottom: 10px;
     overflow: auto;
 }
 #display-number {

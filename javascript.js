@@ -1,24 +1,80 @@
 
 //---- Variables ---- //
-//number 1
-let number1;
-//operator
-let operator;
-//number 2
-let number2;
-let currentNumber;
+let number1 = null;
+let operator = null;
+let number2 = null;
+let currentNumber = 0;
+let newNumber = true;
 
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
-const utilityButtons = document.querySelectorAll(".utility");
-
+const resetButton = document.querySelector(".reset-btn");
 const displayNumber = document.querySelector("#display-number");
 
+//---- Event Listeners----//
 for(const btn of numberButtons){
-    btn.addEventListener("click", () => updateValue(btn));
+    btn.addEventListener("click", () => numberBtnClicked(btn));
 }
 
+for(const btn of operatorButtons){
+    btn.addEventListener("click", () => updateOperator(btn));
+}
+
+resetButton.addEventListener("click", clear);
+
 //---- Functionality ---- //
+function numberBtnClicked(btn){
+    const value = btn.value;
+    let number;
+    if (newNumber === true){
+        if(value == 0) return;
+        number = value;
+        newNumber = false;
+
+        //sets number 2 to something as we check if number2 is null
+        if(number1 != null){
+            number2 = number;
+        }
+    } 
+    //keep adding numbers
+    else number = currentNumber + value;
+    updateValue(number);
+}
+function updateValue(val){
+    currentNumber = val;
+    displayNumber.textContent = currentNumber;
+}
+
+function updateOperator(btn){
+    const value = btn.value;
+
+    if (value === "="){
+        // "=" should only work with all inputs
+        if(operator === null || number2 === null) return;
+        updateValue(operate(number1, currentNumber, operator));
+        operator = null;
+        number1 = null;
+        number2 = null;
+    }
+
+    else if(number1 === null){
+        number1 = currentNumber;
+        operator = value;
+        console.log(value)
+    }
+
+    else if(number2 != null){
+        updateValue(operate(number1, currentNumber, operator));
+        number1 = currentNumber;
+        operator = value;
+        number1 = null;
+        number2 = null;
+        
+    }
+    
+    newNumber = true;
+}
+
 function operate(a, b, operation){
     switch (operation){
         case("+"):
@@ -34,18 +90,18 @@ function operate(a, b, operation){
     }
 }
 
-function updateValue(btn){
-    const value = btn.value;
-
-    if (displayNumber.textContent === "0") currentNumber = value;
-    else currentNumber += value;
-
+function clear(){
+    currentNumber = 0;
     displayNumber.textContent = currentNumber;
+    newNumber = true;
+    operator = null;
+    number1 = null;
+    number2 = null;
 }
 
 //---- Math operations ----
 function add(a, b){
-    return a + b;
+    return +a + +b;
 }
 function subtract(a, b){
     return a - b;
@@ -56,6 +112,4 @@ function multiply(a, b){
 function divide(a, b){
     return a / b;
 }
-
-//clear
 
