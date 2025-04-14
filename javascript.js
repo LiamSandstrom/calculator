@@ -1,31 +1,39 @@
 
 //---- Variables ---- //
 //number 1
+let number1;
 //operator
+let operator;
 //number 2
-
-
-
-
-
-
+let number2;
 
 
 //---- Functionality ---- //
-//operate
-//add
+function operate(a, b, operation){
+    switch (operation){
+        case("+"):
+            return add(a, b);
+        case("-"):
+            return subtract(a, b);
+        case("*"):
+            return multiply(a, b);
+        case("/"):
+            return divide(a, b);
+        default:
+            return NaN;
+    }
+}
+
+//---- Math operations ----
 function add(a, b){
     return a + b;
 }
-//subtract
 function subtract(a, b){
     return a - b;
 }
-//multiply
 function multiply(a, b){
     return a * b;
 }
-//divide
 function divide(a, b){
     return a / b;
 }
