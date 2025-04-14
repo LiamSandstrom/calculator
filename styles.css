@@ -1,6 +1,10 @@
 :root{
     --button-size: 70px;
     --button-gap: 10px;
+    --button-font-size: 30px;
+
+    --display-font-size: 60px;
+    --display-text-color: white;
 }
 
 * {
@@ -37,9 +41,9 @@ body {
     margin-bottom: 20px;
 }
 #display-number {
-    padding-right: calc((var(--button-size) / 2) - var(--button-gap));
-    color: white;
-    font-size: 60px;
+    padding-right: calc((var(--button-size) / 2) - ((var(--button-font-size) / 2)));
+    color: var(--display-text-color);
+    font-size: var(--display-font-size);
     margin: 0;
 }
 
@@ -50,8 +54,13 @@ body {
     display: flex;
 }
 
-.buttons-wrapper > div{
+.utility-wrapper, .number-wrapper, .operator-wrapper{
     gap: var(--button-gap);
+}
+
+.utility-wrapper {
+    display: flex;
+    margin-bottom: var(--button-gap);
 }
 
 .number-wrapper {
@@ -70,10 +79,12 @@ button {
     height: var(--button-size);
     border-radius: 50%;
     border: 0;
-    font-size: 30px;
+    font-size: var(--button-font-size);
 }
 
 .big-btn {
     width: calc((var(--button-size) * 2) + var(--button-gap));
     border-radius: 40px;
+    text-align: start;
+    padding-left: calc((var(--button-font-size) / 2) + var(--button-gap));
 }
