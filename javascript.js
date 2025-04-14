@@ -32,7 +32,9 @@ function numberBtnClicked(btn){
     const value = btn.value;
     let number;
     if (newNumber === true){
-        if(value == 0) return;
+        if(value == 0){
+            updateValue(0);
+        }
         number = value;
         newNumber = false;
 
@@ -42,7 +44,11 @@ function numberBtnClicked(btn){
         }
     } 
     //keep adding numbers
-    else number = currentNumber + value;
+    else{
+        number = currentNumber == 0 ? value : currentNumber + value;
+    } 
+    console.log(currentNumber);
+    if(number == 0) return;
     updateValue(number);
 }
 function updateValue(val){
