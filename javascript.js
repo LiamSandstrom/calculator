@@ -1,4 +1,18 @@
 
+/* 
+TODO:
+1. Make display fontsize scale down when to big
+
+2. Make big numbers use e
+
+3. Hover should increase brightness of buttons
+
+4. add +/- functionality
+
+5.add % functionality
+*/
+
+
 //---- Variables ---- //
 let number1 = null;
 let operator = null;
