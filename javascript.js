@@ -6,6 +6,7 @@ let number1;
 let operator;
 //number 2
 let number2;
+let currentNumber;
 
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -35,9 +36,11 @@ function operate(a, b, operation){
 
 function updateValue(btn){
     const value = btn.value;
-    if(displayNumber.textContent === "0") displayNumber.textContent = value;
-    else displayNumber.textContent += value;
 
+    if (displayNumber.textContent === "0") currentNumber = value;
+    else currentNumber += value;
+
+    displayNumber.textContent = currentNumber;
 }
 
 //---- Math operations ----
