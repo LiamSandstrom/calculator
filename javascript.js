@@ -7,6 +7,7 @@ let currentNumber = 0;
 let newNumber = true;
 let currentBtn = null;
 let dot = false;
+const decimalLimit = 8;
 
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -56,6 +57,7 @@ function numberBtnClicked(btn){
 }
 
 function dotBtnClicked(){
+    console.log(dot + " dot!");
     if(dot) return;
     let value;
     if(newNumber === true){
@@ -70,9 +72,22 @@ function dotBtnClicked(){
 }
 
 function updateValue(val){
-    currentNumber = val;
+    currentNumber = limitDecimals(val);
     displayNumber.textContent = currentNumber;
-    console.log(currentNumber);
+}
+
+
+function limitDecimals(val){
+    let numberStr = val.toString();
+    if(numberStr.includes(".")){
+        let wholeNumbers = numberStr.split(".")[0];
+        let decimals = numberStr.split(".")[1];
+        if(decimals.length > decimalLimit){
+            decimals = decimals.slice(0, decimalLimit);
+        }
+        return wholeNumbers + "." + decimals;
+    }
+    return val;
 }
 
 function operatorBtnClicked(btn){
@@ -94,7 +109,6 @@ function operatorBtnClicked(btn){
         number1 = currentNumber;
         operator = value;
         updateCurrentOperation(btn);
-        console.log(value)
     }
 
     //if we are on 2nd input

@@ -12,7 +12,7 @@
     --button-operator-color: rgb(203, 132, 0);
     --button-text-operator-color:white;
 
-    --display-font-size: 60px;
+    --display-font-size: 65px;
     --display-text-color: white;
 }
 
@@ -53,6 +53,7 @@ body {
 }
 #display-number {
     padding-right: calc((var(--button-size) / 2) - ((var(--button-font-size) / 3)));
+    padding-left: 10px;
     color: var(--display-text-color);
     font-size: var(--display-font-size);
     margin: 0;
