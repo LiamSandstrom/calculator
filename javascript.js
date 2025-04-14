@@ -5,13 +5,18 @@ let operator = null;
 let number2 = null;
 let currentNumber = 0;
 let newNumber = true;
+let currentBtn = null;
 
+const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const resetButton = document.querySelector(".reset-btn");
 const displayNumber = document.querySelector("#display-number");
-
 //---- Event Listeners----//
+for(const btn of buttons){
+    //btn.addEventListener("click", () => updateCurrentOperation(btn));
+}
+
 for(const btn of numberButtons){
     btn.addEventListener("click", () => numberBtnClicked(btn));
 }
@@ -55,11 +60,13 @@ function updateOperator(btn){
         operator = null;
         number1 = null;
         number2 = null;
+        updateCurrentOperation();
     }
 
-    else if(number1 === null){
+    else if(number2 === null){
         number1 = currentNumber;
         operator = value;
+        updateCurrentOperation(btn);
         console.log(value)
     }
 
@@ -67,7 +74,7 @@ function updateOperator(btn){
         updateValue(operate(number1, currentNumber, operator));
         number1 = currentNumber;
         operator = value;
-        number1 = null;
+        updateCurrentOperation(btn);
         number2 = null;
         
     }
@@ -97,6 +104,7 @@ function clear(){
     operator = null;
     number1 = null;
     number2 = null;
+    updateCurrentOperation();
 }
 
 //---- Math operations ----
@@ -113,3 +121,23 @@ function divide(a, b){
     return a / b;
 }
 
+
+function updateCurrentOperation(btn = null){
+    if(currentBtn !== null){
+        const colorOld = window.getComputedStyle(currentBtn).color;
+        const backgroundColorOld = window.getComputedStyle(currentBtn).backgroundColor;
+        currentBtn.style.backgroundColor = colorOld;
+        currentBtn.style.color = backgroundColorOld;
+    }
+
+    if(btn === null){
+        currentBtn = null;
+        return;
+    }
+
+    currentBtn = btn;
+    const color = window.getComputedStyle(btn).color;
+    const backgroundColor = window.getComputedStyle(btn).backgroundColor;
+    btn.style.backgroundColor = color;
+    btn.style.color = backgroundColor;
+}
