@@ -7,6 +7,15 @@ let operator;
 //number 2
 let number2;
 
+const numberButtons = document.querySelectorAll(".number");
+const operatorButtons = document.querySelectorAll(".operator");
+const utilityButtons = document.querySelectorAll(".utility");
+
+const displayNumber = document.querySelector("#display-number");
+
+for(const btn of numberButtons){
+    btn.addEventListener("click", () => updateValue(btn));
+}
 
 //---- Functionality ---- //
 function operate(a, b, operation){
@@ -24,7 +33,10 @@ function operate(a, b, operation){
     }
 }
 
-function updateValue(){
+function updateValue(btn){
+    const value = btn.value;
+    if(displayNumber.textContent === "0") displayNumber.textContent = value;
+    else displayNumber.textContent += value;
 
 }
 
