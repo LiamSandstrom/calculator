@@ -37,6 +37,7 @@ body {
     flex-direction: column;
     background: black;
     padding: 12px;
+    padding-top: 65px;
     border-radius: 10px;
     width: calc(30px + ((var(--button-size) + var(--button-gap)) * 4));
 }
@@ -47,12 +48,11 @@ body {
     display: flex;
     justify-content: flex-end;
     width: 100%;
-    padding-top: 50px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     overflow: auto;
 }
 #display-number {
-    padding-right: calc((var(--button-size) / 2) - ((var(--button-font-size) / 2)));
+    padding-right: calc((var(--button-size) / 2) - ((var(--button-font-size) / 3)));
     color: var(--display-text-color);
     font-size: var(--display-font-size);
     margin: 0;
@@ -115,4 +115,8 @@ button {
 .operator {
     background-color: var(--button-operator-color);
     color: var(--button-text-operator-color);
+}
+
+button:active {
+    opacity: 70%;
 }
