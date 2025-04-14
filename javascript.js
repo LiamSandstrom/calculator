@@ -24,6 +24,10 @@ function operate(a, b, operation){
     }
 }
 
+function updateValue(){
+
+}
+
 //---- Math operations ----
 function add(a, b){
     return a + b;
