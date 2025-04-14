@@ -2,9 +2,15 @@
     --button-size: 70px;
     --button-gap: 10px;
     --button-font-size: 30px;
-    --button-utility-color: grey;
-    --button-number-color: white;
+
+    --button-utility-color: rgb(149, 146, 146);
+    --button-text-utility-color:black;
+
+    --button-number-color: rgb(49, 47, 47);
+    --button-text-number-color: white;
+
     --button-operator-color: orange;
+    --button-text-operator-color:white;
 
     --display-font-size: 60px;
     --display-text-color: white;
@@ -49,6 +55,7 @@ body {
     color: var(--display-text-color);
     font-size: var(--display-font-size);
     margin: 0;
+    font-weight: 200;
 }
 
 
@@ -99,8 +106,11 @@ button {
 
 .number {
     background-color: var(--button-number-color);
+    color: var(--button-text-number-color);
+    font-weight: 300;
 }
 
 .operator {
     background-color: var(--button-operator-color);
+    color: var(--button-text-operator-color);
 }
