@@ -9,6 +9,7 @@ TODO:
 */
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const squareColors = ["rgb(234, 157, 34)", "rgb(210, 134, 27)", "rgb(217, 130, 17)"];
+
 const background = document.querySelector(".background");
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -18,11 +19,9 @@ const displayWrapper = document.querySelector(".display-wrapper");
 const popButton = document.querySelector(".pop-btn");
 const signChangeButton = document.querySelector(".sign-change-btn");
 const baseBackgroundColor = window.getComputedStyle(document.body).backgroundColor;
-const title = document.querySelector("#title");
-const titleText = title.textContent;
 const orange = window.getComputedStyle(document.querySelector(".operator")).backgroundColor;
-console.log(titleText)
-
+const title = document.querySelector("#title");
+const buttons = document.querySelectorAll("button");
 //---- Variables ---- //
 let titleInterval;
 let number1 = null;
@@ -37,9 +36,19 @@ const maxFontSize = window.getComputedStyle(displayNumber).fontSize;
 const minFontSize = (parseFloat(maxFontSize) / 1.7) + "px";
 let currentFontSize = maxFontSize;
 const decimalLimit = 8;
+const titleText = title.textContent;
+const style = window.getComputedStyle(document.body);
+const numberBackgroundColor = style.getPropertyValue("--button-number-color");
+const utilityBackgroundColor = style.getPropertyValue("--button-utility-color");
+const operatorBackgroundColor = style.getPropertyValue("--button-utility-color");
+
 
 
 //---- Event Listeners----//
+for(const btn of buttons){
+    btn.addEventListener("mouseover", () => buttonHoverEffect(btn))
+    btn.addEventListener("mouseleave", () => buttonLeaveEffect(btn));
+}
 for(const btn of numberButtons){
     btn.addEventListener("click", () => numberBtnClicked(btn));
 }
@@ -184,7 +193,6 @@ function convertBigNumber(val){
             returnNumber += `e${len - 1}`
         }
         else{
-            console.log("aaaaa")
             returnNumber =limitDecimals(val);
         }
     }
@@ -196,7 +204,6 @@ function randomNumber(max){
 
 //---- Buttons ----///
 function dotBtnClicked(){
-    console.log(dot + " dot!");
     if(dot) return;
     let value;
     if(newNumber === true){
@@ -227,7 +234,6 @@ function signChangeClicked(){
 function popButtonClicked(){
     let strNumber = currentNumber.toString(); 
     if(strNumber.length > 1){
-    console.log("pop");
         strNumber = parseFloat(strNumber.slice(0, strNumber.length - 1));
         updateValue(strNumber);
     }
@@ -242,7 +248,6 @@ function scaleDisplaySize(){
             return false;
         }
     while(displayNumber.clientWidth  >= displayWrapper.clientWidth){
-    console.log("scale")
        currentFontSize = parseFloat(window.getComputedStyle(displayNumber).fontSize) - 1;      
        displayNumber.style.fontSize = currentFontSize + "px";
        displayNumber.style.paddingTop = parseFloat(maxFontSize) - currentFontSize + "px";
@@ -289,8 +294,8 @@ function divide(a, b){
 //---- Effects ----//
 function updateCurrentOperation(btn = null){
     if(currentBtn !== null){
-        const colorOld = window.getComputedStyle(currentBtn).color;
-        const backgroundColorOld = window.getComputedStyle(currentBtn).backgroundColor;
+        const colorOld = orange;
+        const backgroundColorOld = "white";
         currentBtn.style.backgroundColor = colorOld;
         currentBtn.style.color = backgroundColorOld;
     }
@@ -307,9 +312,30 @@ function updateCurrentOperation(btn = null){
     btn.style.color = backgroundColor;
 }
 function buttonHoverEffect(btn){
-    
+    if(btn === currentBtn) return;
+    if(btn.className == "operator"){
+        btn.style.backgroundColor = style.getPropertyValue("--button-hover-operator-color");
+    }
+    else if(btn.className.includes("utility")){
+        btn.style.backgroundColor = style.getPropertyValue("--button-hover-utility-color");
+    }
+    else {
+        btn.style.backgroundColor = style.getPropertyValue("--button-hover-number-color");
+    }
 }
+function buttonLeaveEffect(btn){
+    if(btn === currentBtn) return;
+    if(btn.className == "operator"){
+        btn.style.backgroundColor = style.getPropertyValue("--button-operator-color");
+    }
+    else if(btn.className.includes("utility")){
+        btn.style.backgroundColor = style.getPropertyValue("--button-utility-color");
+    }
+    else {
+        btn.style.backgroundColor = style.getPropertyValue("--button-number-color");
+    }
 
+}
 function hoverTitle(){
     let i = -12;
     title.style.color = orange;
@@ -333,7 +359,6 @@ function hoverTitle(){
     i += 1;
     },25);
 }
-
 function blackHole(){
     document.body.style.backgroundColor = "rgb(242, 241, 224)";
     for(const square of background.children){
@@ -341,7 +366,6 @@ function blackHole(){
         isBlackHole = true;
     }
 }
-
 function removeBlackHole(){
     document.body.style.backgroundColor = baseBackgroundColor;
     for(const square of background.children){
@@ -354,7 +378,6 @@ function removeBlackHole(){
 function createDivs(){
     while(background.firstChild){
         background.firstChild.remove();
-        console.log("remove")
     }
 
     //let width = parseFloat(window.getComputedStyle(background).width) / 20 + "px";
@@ -364,7 +387,6 @@ function createDivs(){
     let squaresToFillHeight = Math.ceil(parseFloat(window.getComputedStyle(background).height) /  parseFloat(height));
     const amount = squaresToFillWidth * squaresToFillHeight;
 
-    console.log(amount)
     for(let i = 0; i < amount; i++){
         const div = document.createElement("div");
         div.style.width = width;

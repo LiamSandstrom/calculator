@@ -4,12 +4,15 @@
     --button-font-size: 30px;
 
     --button-utility-color: rgb(149, 146, 146);
+    --button-hover-utility-color: rgb(206, 202, 202);
     --button-text-utility-color:black;
 
     --button-number-color: rgb(49, 47, 47);
+    --button-hover-number-color: rgb(121, 118, 118);
     --button-text-number-color: white;
 
     --button-operator-color: rgb(203, 132, 0);
+    --button-hover-operator-color: rgb(202, 172, 114);
     --button-text-operator-color:white;
 
     --display-font-size: 65px;
@@ -159,6 +162,7 @@ button {
     border-radius: 50%;
     border: 0;
     font-size: var(--button-font-size);
+    transition: background-color 0.25s;
 }
 
 .big-btn {
