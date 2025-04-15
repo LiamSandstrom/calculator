@@ -44,6 +44,7 @@ for(const btn of operatorButtons){
 
 resetButton.addEventListener("click", clear);
 signChangeButton.addEventListener("click", signChangeClicked);
+popButton.addEventListener("click", popButtonClicked);
 
 
 //---- Functionality ---- //
@@ -123,6 +124,8 @@ function updateValue(val){
         currentNumber = oldValue;
         displayNumber.textContent = currentNumber;
     }
+    if(!currentNumber.toString().includes(".")) dot = false;
+    else dot = true;
 }
 
 
@@ -153,7 +156,6 @@ function dotBtnClicked(){
     else{
         value = currentNumber + ".";
     }
-    dot = true;
     updateValue(value);
 }
 function clear(){
@@ -170,6 +172,17 @@ function clear(){
 function signChangeClicked(){
     if(currentNumber != 0){
         updateValue(currentNumber * -1);
+    }
+}
+function popButtonClicked(){
+    let strNumber = currentNumber.toString(); 
+    if(strNumber.length > 1){
+    console.log("pop");
+        strNumber = parseFloat(strNumber.slice(0, strNumber.length - 1));
+        updateValue(strNumber);
+    }
+    else{
+        updateValue(0);
     }
 }
 
