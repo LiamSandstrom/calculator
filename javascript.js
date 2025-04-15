@@ -45,23 +45,19 @@ resetButton.addEventListener("click", clear);
 //---- Functionality ---- //
 function numberBtnClicked(btn){
     const value = btn.value;
-
     if(value === "."){
         dotBtnClicked();
         return;
     }
-
     let number;
 
     if (newNumber === true){
-
         resetFontSize();
         if(value == 0){
             updateValue(0);
         }
         number = value;
         newNumber = false;
-
         //we need a 2nd input and this acts like a bool that checks if we have a 2nd input or not
         if(number1 != null){
             number2 = number;
@@ -69,9 +65,13 @@ function numberBtnClicked(btn){
     } 
     else{
         //fix so its 1 instead of 01 etc.
-        number = currentNumber === 0 ? value : currentNumber + value;
+        if(currentNumber == 0){
+            if(dot) number = currentNumber + value;
+            else number = value;
+        }
+        else number = currentNumber + value;
     } 
-    if(number == 0) return;
+    if(number === 0) return;
     updateValue(number);
 }
 
