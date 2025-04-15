@@ -36,12 +36,11 @@ const decimalLimit = 8;
 for(const btn of numberButtons){
     btn.addEventListener("click", () => numberBtnClicked(btn));
 }
-
 for(const btn of operatorButtons){
     btn.addEventListener("click", () => operatorBtnClicked(btn));
 }
-
 resetButton.addEventListener("click", clear);
+
 
 //---- Functionality ---- //
 function numberBtnClicked(btn){
@@ -74,64 +73,6 @@ function numberBtnClicked(btn){
     } 
     if(number == 0) return;
     updateValue(number);
-}
-
-function dotBtnClicked(){
-    console.log(dot + " dot!");
-    if(dot) return;
-    let value;
-    if(newNumber === true){
-        value = "0.";
-        newNumber = false;
-    }
-    else{
-        value = currentNumber + ".";
-    }
-    dot = true;
-    updateValue(value);
-}
-
-function updateValue(val){
-    let oldValue = currentNumber;
-    currentNumber = limitDecimals(val);
-    displayNumber.textContent = currentNumber;
-    if(!scaleDisplaySize()){
-        currentNumber = oldValue;
-        displayNumber.textContent = currentNumber;
-    }
-}
-
-function scaleDisplaySize(){
-        if(currentFontSize <= parseFloat(minFontSize)){
-            return false;
-        }
-    while(displayNumber.clientWidth  >= displayWrapper.clientWidth){
-    console.log("scale")
-       currentFontSize = parseFloat(window.getComputedStyle(displayNumber).fontSize) - 1;      
-       displayNumber.style.fontSize = currentFontSize + "px";
-       displayNumber.style.paddingTop = parseFloat(maxFontSize) - currentFontSize + "px";
-    }
-    
-    return true;
-}
-
-function resetFontSize(){
-    currentFontSize = maxFontSize;
-    displayNumber.style.fontSize = currentFontSize;
-    displayNumber.style.paddingTop = 0;
-}
-
-function limitDecimals(val){
-    let numberStr = val.toString();
-    if(numberStr.includes(".")){
-        let wholeNumbers = numberStr.split(".")[0];
-        let decimals = numberStr.split(".")[1];
-        if(decimals.length > decimalLimit){
-            decimals = decimals.slice(0, decimalLimit);
-        }
-        return wholeNumbers + "." + decimals;
-    }
-    return val;
 }
 
 function operatorBtnClicked(btn){
@@ -170,6 +111,82 @@ function operatorBtnClicked(btn){
     newNumber = true;
 }
 
+function updateValue(val){
+    let oldValue = currentNumber;
+    currentNumber = limitDecimals(val);
+    displayNumber.textContent = currentNumber;
+    if(!scaleDisplaySize()){
+        currentNumber = oldValue;
+        displayNumber.textContent = currentNumber;
+    }
+}
+
+
+//---- functionality helpers ----//
+function limitDecimals(val){
+    let numberStr = val.toString();
+    if(numberStr.includes(".")){
+        let wholeNumbers = numberStr.split(".")[0];
+        let decimals = numberStr.split(".")[1];
+        if(decimals.length > decimalLimit){
+            decimals = decimals.slice(0, decimalLimit);
+        }
+        return wholeNumbers + "." + decimals;
+    }
+    return val;
+}
+
+
+//---- Buttons ----///
+function dotBtnClicked(){
+    console.log(dot + " dot!");
+    if(dot) return;
+    let value;
+    if(newNumber === true){
+        value = "0.";
+        newNumber = false;
+    }
+    else{
+        value = currentNumber + ".";
+    }
+    dot = true;
+    updateValue(value);
+}
+function clear(){
+    currentNumber = 0;
+    displayNumber.textContent = currentNumber;
+    newNumber = true;
+    operator = null;
+    number1 = null;
+    number2 = null;
+    dot = false;
+    updateCurrentOperation();
+    resetFontSize();
+}
+
+
+//---- Adjustable Display Size ----//
+function scaleDisplaySize(){
+        if(currentFontSize <= parseFloat(minFontSize)){
+            return false;
+        }
+    while(displayNumber.clientWidth  >= displayWrapper.clientWidth){
+    console.log("scale")
+       currentFontSize = parseFloat(window.getComputedStyle(displayNumber).fontSize) - 1;      
+       displayNumber.style.fontSize = currentFontSize + "px";
+       displayNumber.style.paddingTop = parseFloat(maxFontSize) - currentFontSize + "px";
+    }
+    
+    return true;
+}
+function resetFontSize(){
+    currentFontSize = maxFontSize;
+    displayNumber.style.fontSize = currentFontSize;
+    displayNumber.style.paddingTop = 0;
+}
+
+
+//---- Math operations ----
 function operate(a, b, operation){
     switch (operation){
         case("+"):
@@ -184,20 +201,6 @@ function operate(a, b, operation){
             return NaN;
     }
 }
-
-function clear(){
-    currentNumber = 0;
-    displayNumber.textContent = currentNumber;
-    newNumber = true;
-    operator = null;
-    number1 = null;
-    number2 = null;
-    dot = false;
-    updateCurrentOperation();
-    resetFontSize();
-}
-
-//---- Math operations ----
 function add(a, b){
     return +a + +b;
 }
@@ -210,6 +213,7 @@ function multiply(a, b){
 function divide(a, b){
     return a / b;
 }
+
 
 //---- Effects ----//
 function updateCurrentOperation(btn = null){
