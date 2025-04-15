@@ -35,7 +35,7 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-    transition: background-color 0.5s;
+    transition: background-color 0.7s;
 }
 
 #title{
@@ -77,7 +77,7 @@ body {
     width: calc(30px + ((var(--button-size) + var(--button-gap)) * 4));
     height: 600px;
     position: relative;
-    transition: scale 0.43s;
+    transition: scale 0.35s cubic-bezier(0.62, 0.15, 0.36, 0.9);
 }
 
 .calculator:hover{
