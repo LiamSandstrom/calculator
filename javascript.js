@@ -17,6 +17,8 @@ const operatorButtons = document.querySelectorAll(".operator");
 const resetButton = document.querySelector(".reset-btn");
 const displayNumber = document.querySelector("#display-number");
 const displayWrapper = document.querySelector(".display-wrapper");
+const popButton = document.querySelector(".pop-btn");
+const signChangeButton = document.querySelector(".sign-change-btn");
 
 //---- Variables ---- //
 let number1 = null;
@@ -39,7 +41,9 @@ for(const btn of numberButtons){
 for(const btn of operatorButtons){
     btn.addEventListener("click", () => operatorBtnClicked(btn));
 }
+
 resetButton.addEventListener("click", clear);
+signChangeButton.addEventListener("click", signChangeClicked);
 
 
 //---- Functionality ---- //
@@ -163,7 +167,11 @@ function clear(){
     updateCurrentOperation();
     resetFontSize();
 }
-
+function signChangeClicked(){
+    if(currentNumber != 0){
+        updateValue(currentNumber * -1);
+    }
+}
 
 //---- Adjustable Display Size ----//
 function scaleDisplaySize(){
