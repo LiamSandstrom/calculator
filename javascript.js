@@ -1,10 +1,13 @@
 
 /* 
 TODO:
-1. Hover should increase brightness of buttons
+1. Keyboard support
 
-2. Title should Hack animation when hovered
+2. Hover should increase brightness of buttons
+
+3. Title should Hack animation when hovered
 */
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const squareColors = ["rgb(234, 157, 34)", "rgb(210, 134, 27)", "rgb(217, 130, 17)"];
 const background = document.querySelector(".background");
 const numberButtons = document.querySelectorAll(".number");
@@ -15,8 +18,13 @@ const displayWrapper = document.querySelector(".display-wrapper");
 const popButton = document.querySelector(".pop-btn");
 const signChangeButton = document.querySelector(".sign-change-btn");
 const baseBackgroundColor = window.getComputedStyle(document.body).backgroundColor;
+const title = document.querySelector("#title");
+const titleText = title.textContent;
+const orange = window.getComputedStyle(document.querySelector(".operator")).backgroundColor;
+console.log(titleText)
 
 //---- Variables ---- //
+let titleInterval;
 let number1 = null;
 let operator = null;
 let number2 = null;
@@ -39,6 +47,7 @@ for(const btn of operatorButtons){
     btn.addEventListener("click", () => operatorBtnClicked(btn));
 }
 
+title.addEventListener("mouseenter", hoverTitle);
 resetButton.addEventListener("click", clear);
 signChangeButton.addEventListener("click", signChangeClicked);
 popButton.addEventListener("click", popButtonClicked);
@@ -297,9 +306,32 @@ function updateCurrentOperation(btn = null){
     btn.style.backgroundColor = color;
     btn.style.color = backgroundColor;
 }
-
 function buttonHoverEffect(btn){
+    
+}
 
+function hoverTitle(){
+    let i = -12;
+    title.style.color = orange;
+    clearInterval(titleInterval);
+    titleInterval = setInterval(() => {
+    title.textContent = title.textContent.split("")
+    .map((letter, index) => {
+        if(index > i){
+            return randomNumber(9);
+        }
+        else{
+            return titleText.charAt(index)
+        }
+    })
+    .join("");
+
+    if(i > title.textContent.length){
+        title.style.color = "white";
+        clearInterval(titleInterval);
+    } 
+    i += 1;
+    },25);
 }
 
 function blackHole(){

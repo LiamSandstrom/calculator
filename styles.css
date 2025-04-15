@@ -45,6 +45,7 @@ body {
     top: 30px;
     font-size: 45px;
     visibility: hidden;
+    transition: color 0.5s;
 }
 
 #footer{
