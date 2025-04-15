@@ -1,11 +1,11 @@
 
 /* 
 TODO:
-1. Make big numbers use e
+1. Hover should increase brightness of buttons
 
-2. Hover should increase brightness of buttons
+2. Title should Hack animation when hovered
 */
-const squareColors = ["rgb(234, 157, 34)", "rgb(195, 159, 92)", "rgb(208, 187, 114)"];
+const squareColors = ["rgb(234, 157, 34)", "rgb(210, 134, 27)", "rgb(217, 130, 17)"];
 const background = document.querySelector(".background");
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -118,6 +118,11 @@ function operatorBtnClicked(btn){
 }
 
 function updateValue(val, calc = false){
+    if(val == Infinity || isNaN(val)){
+        currentNumber = "Black Hole";
+        displayNumber.textContent = currentNumber;
+        return;
+    }
     let oldValue = currentNumber;
     if(calc) val = convertBigNumber(val);
     //val = limitDecimals(val);
