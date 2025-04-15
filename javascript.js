@@ -14,6 +14,7 @@ const displayNumber = document.querySelector("#display-number");
 const displayWrapper = document.querySelector(".display-wrapper");
 const popButton = document.querySelector(".pop-btn");
 const signChangeButton = document.querySelector(".sign-change-btn");
+const baseBackgroundColor = window.getComputedStyle(document.body).backgroundColor;
 
 //---- Variables ---- //
 let number1 = null;
@@ -22,6 +23,7 @@ let number2 = null;
 let currentNumber = 0;
 let newNumber = true;
 let currentBtn = null;
+let isBlackHole = false;
 let dot = false;
 const maxFontSize = window.getComputedStyle(displayNumber).fontSize; 
 const minFontSize = (parseFloat(maxFontSize) / 1.7) + "px";
@@ -85,6 +87,7 @@ function operatorBtnClicked(btn){
     const value = btn.value;
 
     if (value === "="){
+        if(isBlackHole) removeBlackHole();
         // "=" should only work with all inputs
         resetFontSize();
         if(operator === null || number2 === null) return;
@@ -105,6 +108,7 @@ function operatorBtnClicked(btn){
 
     //if we are on 2nd input
     else{
+        if(isBlackHole) removeBlackHole();
         resetFontSize();
         updateValue(operate(number1, currentNumber, operator), true);
         number1 = currentNumber;
@@ -118,9 +122,10 @@ function operatorBtnClicked(btn){
 }
 
 function updateValue(val, calc = false){
-    if(val == Infinity || isNaN(val)){
+    if(val == Infinity || val == -Infinity || isNaN(val)){
         currentNumber = "Black Hole";
         displayNumber.textContent = currentNumber;
+        blackHole();
         return;
     }
     let oldValue = currentNumber;
@@ -295,6 +300,21 @@ function buttonHoverEffect(btn){
 
 }
 
+function blackHole(){
+    document.body.style.backgroundColor = "rgb(242, 241, 224)";
+    for(const square of background.children){
+        square.style.backgroundColor = "black";
+        isBlackHole = true;
+    }
+}
+
+function removeBlackHole(){
+    document.body.style.backgroundColor = baseBackgroundColor;
+    for(const square of background.children){
+        square.style.backgroundColor = baseSquareColor;
+        isBlackHole = false;
+    }
+}
 
 //---- Background ----//
 function createDivs(){
@@ -308,7 +328,7 @@ function createDivs(){
     let height = width;
     let squaresToFillWidth = Math.ceil(parseFloat(window.getComputedStyle(background).width) /  parseFloat(width));
     let squaresToFillHeight = Math.ceil(parseFloat(window.getComputedStyle(background).height) /  parseFloat(height));
-    const amount =  squaresToFillWidth * squaresToFillHeight;
+    const amount = squaresToFillWidth * squaresToFillHeight;
 
     console.log(amount)
     for(let i = 0; i < amount; i++){
@@ -319,6 +339,7 @@ function createDivs(){
         div.addEventListener("mouseenter", () => squareHover(div));
         div.addEventListener("mouseleave", () => squareLeave(div));
         background.append(div);
+        if(isBlackHole) div.style.backgroundColor = "black";
     }
 }
 function squareHover(square){
@@ -328,5 +349,6 @@ function squareHover(square){
 }
 function squareLeave(square){
     square.style.transition = "background 1s";
-    square.style.backgroundColor = baseSquareColor;
+    if(isBlackHole)square.style.backgroundColor = "black";
+    else square.style.backgroundColor = baseSquareColor;
 }
