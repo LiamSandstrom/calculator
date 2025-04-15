@@ -12,6 +12,11 @@ TODO:
 5.add % functionality
 */
 
+const numberButtons = document.querySelectorAll(".number");
+const operatorButtons = document.querySelectorAll(".operator");
+const resetButton = document.querySelector(".reset-btn");
+const displayNumber = document.querySelector("#display-number");
+const displayWrapper = document.querySelector(".display-wrapper");
 
 //---- Variables ---- //
 let number1 = null;
@@ -21,12 +26,11 @@ let currentNumber = 0;
 let newNumber = true;
 let currentBtn = null;
 let dot = false;
+const maxFontSize = window.getComputedStyle(displayNumber).fontSize; 
+const minFontSize = (parseFloat(maxFontSize) / 2) + "px";
+let currentFontSize = maxFontSize;
 const decimalLimit = 8;
 
-const numberButtons = document.querySelectorAll(".number");
-const operatorButtons = document.querySelectorAll(".operator");
-const resetButton = document.querySelector(".reset-btn");
-const displayNumber = document.querySelector("#display-number");
 
 //---- Event Listeners----//
 for(const btn of numberButtons){
@@ -51,6 +55,8 @@ function numberBtnClicked(btn){
     let number;
 
     if (newNumber === true){
+
+        resetFontSize();
         if(value == 0){
             updateValue(0);
         }
@@ -86,10 +92,34 @@ function dotBtnClicked(){
 }
 
 function updateValue(val){
+    let oldValue = currentNumber;
     currentNumber = limitDecimals(val);
     displayNumber.textContent = currentNumber;
+    if(!scaleDisplaySize()){
+        currentNumber = oldValue;
+        displayNumber.textContent = currentNumber;
+    }
 }
 
+function scaleDisplaySize(){
+        if(currentFontSize <= parseFloat(minFontSize)){
+            return false;
+        }
+    while(displayNumber.clientWidth  >= displayWrapper.clientWidth){
+    console.log("scale")
+       currentFontSize = parseFloat(window.getComputedStyle(displayNumber).fontSize) - 1;      
+       displayNumber.style.fontSize = currentFontSize + "px";
+       displayNumber.style.paddingTop = parseFloat(maxFontSize) - currentFontSize + "px";
+    }
+    
+    return true;
+}
+
+function resetFontSize(){
+    currentFontSize = maxFontSize;
+    displayNumber.style.fontSize = currentFontSize;
+    displayNumber.style.paddingTop = 0;
+}
 
 function limitDecimals(val){
     let numberStr = val.toString();
@@ -109,6 +139,7 @@ function operatorBtnClicked(btn){
 
     if (value === "="){
         // "=" should only work with all inputs
+        resetFontSize();
         if(operator === null || number2 === null) return;
         updateValue(operate(number1, currentNumber, operator));
         operator = null;
@@ -127,13 +158,13 @@ function operatorBtnClicked(btn){
 
     //if we are on 2nd input
     else{
+        resetFontSize();
         updateValue(operate(number1, currentNumber, operator));
         number1 = currentNumber;
         operator = value;
         updateCurrentOperation(btn);
         number2 = null;
         dot = false;
-        
     }
 
     newNumber = true;
@@ -163,6 +194,7 @@ function clear(){
     number2 = null;
     dot = false;
     updateCurrentOperation();
+    resetFontSize();
 }
 
 //---- Math operations ----

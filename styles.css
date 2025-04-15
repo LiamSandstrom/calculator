@@ -40,6 +40,7 @@ body {
     padding-top: 65px;
     border-radius: 10px;
     width: calc(30px + ((var(--button-size) + var(--button-gap)) * 4));
+    height: 600px;
 }
 
 /*----Display----*/
@@ -52,13 +53,14 @@ body {
     overflow: auto;
 }
 #display-number {
-    padding-right: calc((var(--button-size) / 2) - ((var(--button-font-size) / 3)));
+    padding-right: calc((var(--button-size) / 2) - ((var(--button-font-size) / 2)));
     padding-left: 10px;
     color: var(--display-text-color);
     font-size: var(--display-font-size);
     margin: 0;
     font-weight: 200;
     max-width: 100%;
+    height: calc((var(--display-font-size)) + 10px);
 }
 
 
