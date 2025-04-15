@@ -5,7 +5,8 @@ TODO:
 
 2. Hover should increase brightness of buttons
 */
-
+const squareColors = ["rgb(234, 157, 34)", "rgb(195, 159, 92)", "rgb(215, 217, 149)"];
+const background = document.querySelector(".background");
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const resetButton = document.querySelector(".reset-btn");
@@ -39,6 +40,51 @@ for(const btn of operatorButtons){
 resetButton.addEventListener("click", clear);
 signChangeButton.addEventListener("click", signChangeClicked);
 popButton.addEventListener("click", popButtonClicked);
+window.addEventListener("resize", createDivs);
+
+createDivs();
+const baseSquareColor = window.getComputedStyle(document.querySelector(".square")).backgroundColor;
+
+function createDivs(){
+    while(background.firstChild){
+        background.firstChild.remove();
+        console.log("remove")
+    }
+
+    //let width = parseFloat(window.getComputedStyle(background).width) / 20 + "px";
+    let width = "80px";
+    let height = width;
+    let squaresToFillWidth = Math.ceil(parseFloat(window.getComputedStyle(background).width) /  parseFloat(width));
+    let squaresToFillHeight = Math.ceil(parseFloat(window.getComputedStyle(background).height) /  parseFloat(height));
+    const amount =  squaresToFillWidth * squaresToFillHeight;
+
+    console.log(amount)
+    for(let i = 0; i < amount; i++){
+        const div = document.createElement("div");
+        div.style.width = width;
+        div.style.height = height;
+        div.classList.add("square");
+        div.addEventListener("mouseenter", () => squareHover(div));
+        div.addEventListener("mouseleave", () => squareLeave(div));
+        background.append(div);
+    }
+}
+
+function randomNumber(max){
+    return Math.floor(Math.random() * max);
+}
+
+function squareHover(square){
+    let rand = randomNumber(squareColors.length);
+    square.style.transition = "background 0s";
+    square.style.backgroundColor = squareColors[rand];
+}
+
+function squareLeave(square){
+    square.style.transition = "background 1s";
+    square.style.backgroundColor = baseSquareColor;
+}
+
 
 
 //---- Functionality ---- //
