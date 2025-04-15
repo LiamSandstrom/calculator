@@ -2,11 +2,8 @@
 /* 
 TODO:
 1. Keyboard support
-
-2. Hover should increase brightness of buttons
-
-3. Title should Hack animation when hovered
 */
+
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const squareColors = ["rgb(234, 157, 34)", "rgb(210, 134, 27)", "rgb(217, 130, 17)"];
 
@@ -18,10 +15,10 @@ const displayNumber = document.querySelector("#display-number");
 const displayWrapper = document.querySelector(".display-wrapper");
 const popButton = document.querySelector(".pop-btn");
 const signChangeButton = document.querySelector(".sign-change-btn");
-const baseBackgroundColor = window.getComputedStyle(document.body).backgroundColor;
 const orange = window.getComputedStyle(document.querySelector(".operator")).backgroundColor;
 const title = document.querySelector("#title");
 const buttons = document.querySelectorAll("button");
+
 //---- Variables ---- //
 let titleInterval;
 let number1 = null;
@@ -32,6 +29,7 @@ let newNumber = true;
 let currentBtn = null;
 let isBlackHole = false;
 let dot = false;
+const baseBackgroundColor = window.getComputedStyle(document.body).backgroundColor;
 const maxFontSize = window.getComputedStyle(displayNumber).fontSize; 
 const minFontSize = (parseFloat(maxFontSize) / 1.7) + "px";
 let currentFontSize = maxFontSize;
@@ -98,7 +96,6 @@ function numberBtnClicked(btn){
     if(number === 0) return;
     updateValue(number);
 }
-
 function operatorBtnClicked(btn){
     const value = btn.value;
 
@@ -136,7 +133,6 @@ function operatorBtnClicked(btn){
 
     newNumber = true;
 }
-
 function updateValue(val, calc = false){
     if(val == Infinity || val == -Infinity || isNaN(val)){
         currentNumber = "Black Hole";
@@ -351,16 +347,17 @@ function hoverTitle(){
         }
     })
     .join("");
-
     if(i > title.textContent.length){
         title.style.color = "white";
         clearInterval(titleInterval);
     } 
-    i += 1;
+    
+    if(!isBlackHole) i += 1;
     },25);
 }
 function blackHole(){
     document.body.style.backgroundColor = "rgb(242, 241, 224)";
+    hoverTitle(true);
     for(const square of background.children){
         square.style.backgroundColor = "black";
         isBlackHole = true;
