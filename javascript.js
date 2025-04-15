@@ -48,8 +48,6 @@ createDivs();
 const baseSquareColor = window.getComputedStyle(document.querySelector(".square")).backgroundColor;
 
 
-
-
 //---- Functionality ---- //
 function numberBtnClicked(btn){
     const value = btn.value;
@@ -130,7 +128,7 @@ function updateValue(val, calc = false){
     }
     let oldValue = currentNumber;
     if(calc) val = convertBigNumber(val);
-    //val = limitDecimals(val);
+    //else val = limitDecimals(val);
     currentNumber = val;
     displayNumber.textContent = currentNumber;
     if(!scaleDisplaySize()){
@@ -175,6 +173,10 @@ function convertBigNumber(val){
             returnNumber = strNumber.slice(0, 1);
             returnNumber += "." + strNumber.slice(1,2);
             returnNumber += `e${len - 1}`
+        }
+        else{
+            console.log("aaaaa")
+            returnNumber =limitDecimals(val);
         }
     }
     return returnNumber;
