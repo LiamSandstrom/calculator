@@ -1,15 +1,9 @@
 
 /* 
 TODO:
-1. Make display fontsize scale down when to big
+1. Make big numbers use e
 
-2. Make big numbers use e
-
-3. Hover should increase brightness of buttons
-
-4. add +/- functionality
-
-5.add % functionality
+2. Hover should increase brightness of buttons
 */
 
 const numberButtons = document.querySelectorAll(".number");
@@ -29,7 +23,7 @@ let newNumber = true;
 let currentBtn = null;
 let dot = false;
 const maxFontSize = window.getComputedStyle(displayNumber).fontSize; 
-const minFontSize = (parseFloat(maxFontSize) / 2) + "px";
+const minFontSize = (parseFloat(maxFontSize) / 1.7) + "px";
 let currentFontSize = maxFontSize;
 const decimalLimit = 8;
 
@@ -87,7 +81,7 @@ function operatorBtnClicked(btn){
         // "=" should only work with all inputs
         resetFontSize();
         if(operator === null || number2 === null) return;
-        updateValue(operate(number1, currentNumber, operator));
+        updateValue(parseFloat(operate(number1, currentNumber, operator)), true);
         operator = null;
         number1 = null;
         number2 = null;
@@ -105,7 +99,7 @@ function operatorBtnClicked(btn){
     //if we are on 2nd input
     else{
         resetFontSize();
-        updateValue(operate(number1, currentNumber, operator));
+        updateValue(operate(number1, currentNumber, operator), true);
         number1 = currentNumber;
         operator = value;
         updateCurrentOperation(btn);
@@ -116,9 +110,11 @@ function operatorBtnClicked(btn){
     newNumber = true;
 }
 
-function updateValue(val){
+function updateValue(val, calc = false){
     let oldValue = currentNumber;
-    currentNumber = limitDecimals(val);
+    if(calc) val = convertBigNumber(val);
+    //val = limitDecimals(val);
+    currentNumber = val;
     displayNumber.textContent = currentNumber;
     if(!scaleDisplaySize()){
         currentNumber = oldValue;
@@ -127,7 +123,6 @@ function updateValue(val){
     if(!currentNumber.toString().includes(".")) dot = false;
     else dot = true;
 }
-
 
 //---- functionality helpers ----//
 function limitDecimals(val){
@@ -143,6 +138,31 @@ function limitDecimals(val){
     return val;
 }
 
+function convertBigNumber(val){
+    const strNumber = val.toString();
+    let returnNumber = strNumber;
+    if(strNumber.length > 9 || strNumber.includes("e")){
+        let len = strNumber.length; 
+        let eAmount = strNumber.includes("e") ? true : false;
+        //if calculation has e in it wee need to get that e value
+        // and w
+        if(eAmount){
+            let eIndex = strNumber.split("").lastIndexOf("e");
+            let eValue = strNumber.slice(eIndex + 2);
+            let len = strNumber.slice(0, eIndex).length - 3;
+            len = parseFloat(len) + parseFloat(eValue);
+            returnNumber = strNumber.slice(0, 1);
+            returnNumber += strNumber.slice(1,3);
+            returnNumber += `e${len}`
+        }
+        else if(val > 999999999){
+            returnNumber = strNumber.slice(0, 1);
+            returnNumber += "." + strNumber.slice(1,2);
+            returnNumber += `e${len - 1}`
+        }
+    }
+    return returnNumber;
+}
 
 //---- Buttons ----///
 function dotBtnClicked(){
@@ -229,6 +249,7 @@ function subtract(a, b){
     return a - b;
 }
 function multiply(a, b){
+    console.log(a* b)
     return a * b;
 }
 function divide(a, b){
