@@ -447,6 +447,7 @@ function createDivs(){
     let width = "50px";
     let height = width;
     let squaresToFillWidth = Math.ceil(parseFloat(window.getComputedStyle(background).width) /  parseFloat(width));
+    squaresToFillWidth *= 1.1;
     let squaresToFillHeight = Math.ceil(parseFloat(window.getComputedStyle(background).height) /  parseFloat(height));
     const amount = squaresToFillWidth * squaresToFillHeight;
 
