@@ -1,12 +1,12 @@
 
 /* 
 TODO:
-1. Keyboard support
-2. add pulsation to body background
+1. add pulsation to body background
 */
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const squareColors = ["rgb(234, 157, 34)", "rgb(210, 134, 27)", "rgb(217, 130, 17)"];
+const blackHoleColors = ["rgb(234,157, 34)", "rgb(214,214,214)","rgb(224, 213, 141)"]
 
 const background = document.querySelector(".background");
 const numberButtons = document.querySelectorAll(".number");
@@ -22,6 +22,9 @@ const buttons = document.querySelectorAll("button");
 
 //---- Variables ---- //
 let titleInterval;
+let backgroundSwitch = false;
+let backTimer;
+let lastIndex;
 let number1 = null;
 let operator = null;
 let number2 = null;
@@ -41,7 +44,7 @@ const numberBackgroundColor = style.getPropertyValue("--button-number-color");
 const utilityBackgroundColor = style.getPropertyValue("--button-utility-color");
 const operatorBackgroundColor = style.getPropertyValue("--button-utility-color");
 
-
+console.log(baseBackgroundColor)
 
 //---- Event Listeners----//
 window.addEventListener("keydown", (e) => {
@@ -97,7 +100,6 @@ window.addEventListener("keydown", (e) => {
         clear();
     }
 })
-
 for(const btn of buttons){
     btn.addEventListener("mouseover", () => buttonHoverEffect(btn))
     btn.addEventListener("mouseleave", () => buttonLeaveEffect(btn));
@@ -120,12 +122,9 @@ const baseSquareColor = window.getComputedStyle(document.querySelector(".square"
 
 
 //---- Functionality ---- //
-function btnToValue(btn){
-    numberBtnClicked(btn.value);
-}
-
 function numberBtnClicked(val){
     const value = val;
+    if(isBlackHole) pulseBackground();
     if(value === "."){
         dotBtnClicked();
         return;
@@ -157,11 +156,11 @@ function numberBtnClicked(val){
 }
 function operatorBtnClicked(btn){
     const value = btn.value;
-
+    if(isBlackHole) pulseBackground();
     if (value === "="){
-        if(isBlackHole) removeBlackHole();
         // "=" should only work with all inputs
         if(operator === null || number2 === null) return;
+        if(isBlackHole) removeBlackHole();
         resetFontSize();
         updateValue(parseFloat(operate(number1, currentNumber, operator)), true);
         operator = null;
@@ -213,6 +212,9 @@ function updateValue(val, calc = false){
 }
 
 //---- functionality helpers ----//
+function btnToValue(btn){
+    numberBtnClicked(btn.value);
+}
 function limitDecimals(val){
     let numberStr = val.toString();
     if(numberStr.includes(".")){
@@ -260,6 +262,7 @@ function randomNumber(max){
 //---- Buttons ----///
 function dotBtnClicked(){
     if(dot) return;
+    if(isBlackHole) pulseBackground();
     let value;
     if(newNumber === true){
         value = "0.";
@@ -271,6 +274,7 @@ function dotBtnClicked(){
     updateValue(value);
 }
 function clear(){
+    if(isBlackHole) pulseBackground();
     currentNumber = 0;
     displayNumber.textContent = currentNumber;
     newNumber = true;
@@ -283,10 +287,12 @@ function clear(){
 }
 function signChangeClicked(){
     if(currentNumber != 0){
+        if(isBlackHole) pulseBackground();
         updateValue(currentNumber * -1);
     }
 }
 function popButtonClicked(){
+    if(isBlackHole) pulseBackground();
     let strNumber = currentNumber.toString(); 
     if(strNumber.length > 1){
         strNumber = parseFloat(strNumber.slice(0, strNumber.length - 1));
@@ -415,7 +421,7 @@ function hoverTitle(){
     },25);
 }
 function blackHole(){
-    document.body.style.backgroundColor = "rgb(242, 241, 224)";
+    document.body.style.backgroundColor = "rgb(0,0,0)";
     hoverTitle(true);
     for(const square of background.children){
         square.style.backgroundColor = "black";
@@ -423,6 +429,7 @@ function blackHole(){
     }
 }
 function removeBlackHole(){
+    clearTimeout(backTimer);
     document.body.style.backgroundColor = baseBackgroundColor;
     for(const square of background.children){
         square.style.backgroundColor = baseSquareColor;
@@ -463,4 +470,20 @@ function squareLeave(square){
     square.style.transition = "background 1s";
     if(isBlackHole)square.style.backgroundColor = "black";
     else square.style.backgroundColor = baseSquareColor;
+}
+function pulseBackground(){
+    document.body.style.transition = "background-color 0.22s";
+    if(backTimer) clearTimeout(backTimer);
+    let color = randomNumber(blackHoleColors.length);
+    while(color == lastIndex){
+    color = randomNumber(blackHoleColors.length);
+    }
+    lastIndex = color;
+    document.body.style.backgroundColor = blackHoleColors[color];
+    backTimer = setTimeout(setBlackHoleBackground, 500);
+}
+function setBlackHoleBackground(){
+    backTimer = null;
+    document.body.style.transition = "background-color 1.1s";
+    document.body.style.backgroundColor = "rgb(0, 0, 0)";
 }
