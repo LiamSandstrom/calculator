@@ -2,6 +2,7 @@
 /* 
 TODO:
 1. Keyboard support
+2. add pulsation to body background
 */
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -43,12 +44,18 @@ const operatorBackgroundColor = style.getPropertyValue("--button-utility-color")
 
 
 //---- Event Listeners----//
+window.addEventListener("keydown", (e) => {
+    if(Number.isInteger(parseInt((e.key)))){
+        numberBtnClicked(e.key)
+    }
+})
+
 for(const btn of buttons){
     btn.addEventListener("mouseover", () => buttonHoverEffect(btn))
     btn.addEventListener("mouseleave", () => buttonLeaveEffect(btn));
 }
 for(const btn of numberButtons){
-    btn.addEventListener("click", () => numberBtnClicked(btn));
+    btn.addEventListener("click", () => btnToValue(btn));
 }
 for(const btn of operatorButtons){
     btn.addEventListener("click", () => operatorBtnClicked(btn));
@@ -65,8 +72,12 @@ const baseSquareColor = window.getComputedStyle(document.querySelector(".square"
 
 
 //---- Functionality ---- //
-function numberBtnClicked(btn){
-    const value = btn.value;
+function btnToValue(btn){
+    numberBtnClicked(btn.value);
+}
+
+function numberBtnClicked(val){
+    const value = val;
     if(value === "."){
         dotBtnClicked();
         return;
@@ -102,8 +113,8 @@ function operatorBtnClicked(btn){
     if (value === "="){
         if(isBlackHole) removeBlackHole();
         // "=" should only work with all inputs
-        resetFontSize();
         if(operator === null || number2 === null) return;
+        resetFontSize();
         updateValue(parseFloat(operate(number1, currentNumber, operator)), true);
         operator = null;
         number1 = null;
