@@ -45,8 +45,56 @@ const operatorBackgroundColor = style.getPropertyValue("--button-utility-color")
 
 //---- Event Listeners----//
 window.addEventListener("keydown", (e) => {
+    console.log(e.key)
     if(Number.isInteger(parseInt((e.key)))){
         numberBtnClicked(e.key)
+    }
+    else if(e.key == "."){
+        dotBtnClicked();
+    }
+    else if(e.key == "/"){
+        for(btn of operatorButtons){
+            if(btn.value == "/"){
+                operatorBtnClicked(btn);
+            }
+        }
+    }
+    else if(e.key == "*"){
+        for(btn of operatorButtons){
+            if(btn.value == "*"){
+                operatorBtnClicked(btn);
+            }
+        }
+    }
+    else if(e.key == "-"){
+        for(btn of operatorButtons){
+            if(btn.value == "-"){
+                operatorBtnClicked(btn);
+            }
+        }
+    }
+    else if(e.key == "+"){
+        for(btn of operatorButtons){
+            if(btn.value == "+"){
+                operatorBtnClicked(btn);
+            }
+        }
+    }
+    else if(e.key == "=" || e.key == "Enter"){
+        for(btn of operatorButtons){
+            if(btn.value == "="){
+                operatorBtnClicked(btn);
+            }
+        }
+    }
+    else if(e.key == "Backspace"){
+        popButtonClicked();
+    }
+    else if(e.key == "!"){
+        signChangeClicked();
+    }
+    else if(e.key == "r"){
+        clear();
     }
 })
 
