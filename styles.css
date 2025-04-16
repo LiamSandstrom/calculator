@@ -94,14 +94,6 @@ body {
     border: 4px solid rgba(242, 148, 17, 0.531);
 }
 
-.square {
-    background-color: var(--background-dark);
-    position: relative;
-    transition: background 1s;
-    border-radius: 4px;
-}
-
-
 .background{
     display: flex;
     width: 130%;
@@ -111,6 +103,14 @@ body {
     flex-wrap: wrap;
     position: absolute;
 }
+
+.square {
+    background-color: var(--background-dark);
+    position: relative;
+    transition: background 1s;
+    border-radius: 4px;
+}
+
 
 /*----Display----*/
 .display-wrapper {

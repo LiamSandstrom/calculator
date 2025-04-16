@@ -1,10 +1,3 @@
-
-/* 
-TODO:
-1. add pulsation to body background
-*/
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const squareColors = ["rgb(234, 157, 34)", "rgb(210, 134, 27)", "rgb(217, 130, 17)"];
 const blackHoleColors = ["rgb(234,157, 34)", "rgb(214,214,214)","rgb(224, 213, 141)"]
 
@@ -44,7 +37,6 @@ const numberBackgroundColor = style.getPropertyValue("--button-number-color");
 const utilityBackgroundColor = style.getPropertyValue("--button-utility-color");
 const operatorBackgroundColor = style.getPropertyValue("--button-utility-color");
 
-console.log(baseBackgroundColor)
 
 //---- Event Listeners----//
 window.addEventListener("keydown", (e) => {
@@ -117,11 +109,11 @@ signChangeButton.addEventListener("click", signChangeClicked);
 popButton.addEventListener("click", popButtonClicked);
 window.addEventListener("resize", createDivs);
 
+
+//---- Functionality ---- //
 createDivs();
 const baseSquareColor = window.getComputedStyle(document.querySelector(".square")).backgroundColor;
 
-
-//---- Functionality ---- //
 function numberBtnClicked(val){
     const value = val;
     if(isBlackHole) pulseBackground();
